@@ -1,0 +1,20 @@
+android {
+    configurations.all {
+        resolutionStrategy {
+            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+    maven {
+        url  "https://dl.bintray.com/paytabsandroidsdk/paytabs-sdk"
+    }
+    maven { url "http://pay.cards/maven" }
+}
+
+dependencies {
+    implementation 'com.paytabs:payment-sdk:6.0.2-rc13'
+}

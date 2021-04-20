@@ -1,0 +1,23 @@
+{
+  "name": "com.paytabs.cordova.plugin",
+  "version": "1.0.2",
+  "description": "PayTabs Cordova Plugin",
+  "cordova": {
+    "id": "com.paytabs.cordova.plugin",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "paytabs",
+    "paytabs cordova",
+    "payment"
+  ],
+  "author": "Mohamed Adly (m.adly@paytabs.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/paytabscom/paytabs-cordova"
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.paytabs.cordova.plugin" version="1.0.2">
+   <name>CordovaPayTabsPlugin</name>
+   <js-module name="CordovaPaymentPlugin" src="www/CordovaPaymentPlugin.js">
+      <clobbers target="cordova.plugins.CordovaPaymentPlugin" />
+   </js-module>
+   <engines>
+      <engine name="cordova" version=">=10.0.0" />
+      <engine name="cordova-android" version=">=9.0.0" />
+   </engines>
+   <platform name="ios">
+      <config-file parent="/*" target="config.xml">
+         <feature name="CordovaPaymentPlugin">
+            <param name="ios-package" value="CordovaPaymentPlugin" />
+         </feature>
+      </config-file>
+      <source-file src="src/ios/CordovaPaymentPlugin.swift" />
+      <podspec>
+        <config>
+            <source url="https://github.com/CocoaPods/Specs.git"/>
+        </config>
+        <pods use-frameworks="true">
+            <pod name="PayTabsSDK" spec="~> 6.0.17" />
+        </pods>
+    </podspec>
+   </platform>
+   <platform name="android">
+      <config-file parent="/*" target="res/xml/config.xml">
+         <feature name="CordovaPaymentPlugin">
+            <param name="android-package" value="com.paymentsdk.cordova.plugin.CordovaPaymentPlugin" />
+         </feature>
+      </config-file>
+      <config-file parent="/*" target="AndroidManifest.xml" />
+      <source-file src="src/android/CordovaPaymentPlugin.java" target-dir="src/com/paymentsdk/cordova/plugin" />
+      <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+   </platform>
+</plugin>
