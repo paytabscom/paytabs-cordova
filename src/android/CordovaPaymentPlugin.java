@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
 
 import com.google.gson.Gson;
 import com.payment.paymentsdk.PaymentSdkActivity;
@@ -59,6 +60,7 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
 
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.optString("tokeniseType"));
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.optString("tokenFormat"));
+        PaymentSdkTransactionType transactionType = createPaymentSdkTransactionType(paymentDetails.optString("transactionType"));
 
         JSONObject billingDetails = paymentDetails.optJSONObject("billingDetails");
         PaymentSdkBillingDetails billingData = null;
@@ -98,6 +100,7 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
                 .showShippingInfo(paymentDetails.optBoolean("showShippingInfo"))
                 .forceShippingInfo(paymentDetails.optBoolean("forceShippingInfo"))
                 .setScreenTitle(screenTitle)
+                .setTransactionType(transactionType)
                 .build();
         String samsungToken = paymentDetails.optString("samsungToken");
         if (samsungToken != null && samsungToken.length() > 0)

@@ -67,7 +67,9 @@ import UIKit
             configuration.tokenFormat = type
         }
         
-        //        public var paymentNetworks: [PKPaymentNetwork]?
+        if let transactionType = dictionary["transactionType"] as? String {
+            configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
+        }
         
         if let themeDictionary = dictionary["theme"] as? [String: Any],
            let theme = generateTheme(dictionary: themeDictionary) {

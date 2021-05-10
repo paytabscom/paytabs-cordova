@@ -16,5 +16,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.paytabs:payment-sdk:6.0.2-rc13'
+    implementation 'com.paytabs:payment-sdk:6.0.6'
 }

@@ -1,6 +1,6 @@
 
 # Cordova PayTabs Plugin
-![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.0.2-green)
+![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.1.0-green)
 [![npm](https://img.shields.io/npm/l/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs/)
 [![npm](https://img.shields.io/npm/dm/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs)
 
@@ -173,6 +173,20 @@ exports.TokeniseFromat = Object.freeze({"none":"1",
 ```javascript
 configuration.tokeniseFormat = cordova.plugins.CordovaPaymentPlugin.TokeniseFromat.hex32
 ```
+
+* Transaction types
+
+The default type is sale
+
+```javascript
+const TransactionType = Object.freeze({"sale":"sale", 
+"authorize": "auth"});
+```
+
+```javascript
+configuration.transactionType = TransactionType.sale
+```
+
 ## Demo application
 
 Check our complete [sample][sample].
