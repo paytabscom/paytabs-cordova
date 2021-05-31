@@ -1,6 +1,6 @@
 
 # Cordova PayTabs Plugin
-![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.1.1-green)
+![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.2.0-green)
 [![npm](https://img.shields.io/npm/l/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs/)
 [![npm](https://img.shields.io/npm/dm/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs)
 
@@ -16,6 +16,15 @@ Plugin Support:
 ```
 $ cordova plugin add com.paytabs.cordova.plugin
 ```
+
+### Android - Prerequisites
+Open `gradle.properties` and set the flags useAndroidX and enableJetifier with true.
+
+```
+android.useAndroidX=true
+android.enableJetifier=true
+```
+
 ## Usage
 
 ### Pay with Card
@@ -60,7 +69,7 @@ let configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKConfigura
     configuration.forceShippingInfo = false
 ```
 
-Options to show billing and shipping ifno
+Options to show billing and shipping info
 
 ```javascript
 	configuration.showBillingInfo = true
@@ -133,6 +142,41 @@ Pass Samsung Pay token to the configuration and call `startCardPayment`
 
 ```javascript
 configuration.samsungToken = "token"
+```
+### Pay with Alternative Payment Methods
+
+It becomes easy to integrate with other payment methods in your region like STCPay, OmanNet, KNet, Valu, Fawry, UnionPay, and Meeza, to serve a large sector of customers.
+
+1. Do the steps 1 and 2 from **Pay with Card**.
+
+2. Choose one or more of the payment methods you want to support.
+
+```javascript
+configuration.alternativePaymentMethods = [AlternativePaymentMethod.stcPay]
+```
+
+3. Start payment by calling `startAlternativePaymentMethod` method and handle the transaction details 
+
+```javascript
+
+cordova.plugins.CordovaPaymentPlugin.startAlternativePaymentMethod(configuration, function (result) {
+        if (result["status"] == "success") {
+            // Handle transaction details here.
+            var transactionDetails = result["data"];
+            console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+            console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+            console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+            console.log("transactionReference:" + transactionDetails.transactionReference)
+            console.log("token:" + transactionDetails.token)
+          } else if (result["status"] == "error") {
+            // Handle error here the code and message.
+          } else if (result["status"] == "event") {
+            // Handle events here.
+          }
+    }, function (error) {
+        console.log(error)
+    });
+     
 ```
 
 ## Enums

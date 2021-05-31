@@ -30,12 +30,21 @@ import UIKit
         }
     }
     
+    @objc(startAlternativePaymentMethod:) func startAlternativePaymentMethod(_ command: CDVInvokedUrlCommand) {
+        self.command = command
+        guard let paymentDetails = command.arguments.first as? [String: Any] else { return }
+        let configuration = generateConfiguration(dictionary: paymentDetails)
+        if let rootViewController = getRootController() {
+            PaymentManager.startAlternativePaymentMethod(on: rootViewController, configuration: configuration, delegate: self)
+        }
+    }
     
     func getRootController() -> UIViewController? {
         let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) ?? UIApplication.shared.windows.first
         let topController = keyWindow?.rootViewController
         return topController
     }
+    
     private func generateConfiguration(dictionary: [String: Any]) -> PaymentSDKConfiguration {
         let configuration = PaymentSDKConfiguration()
         configuration.profileID = dictionary["profileID"] as? String ?? ""
@@ -66,7 +75,7 @@ import UIKit
            let type = TokenFormat.getType(type: tokenFormat) {
             configuration.tokenFormat = type
         }
-        
+
         if let transactionType = dictionary["transactionType"] as? String {
             configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
         }
@@ -82,6 +91,10 @@ import UIKit
         }
         if let shippingDictionary = dictionary["shippingDetails"] as?  [String: Any] {
             configuration.shippingDetails = generateShippingDetails(dictionary: shippingDictionary)
+        }
+
+        if let alternativePaymentMethods = dictionary["alternativePaymentMethods"] as? [String] {
+            configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
         }
         return configuration
     }
@@ -99,6 +112,7 @@ import UIKit
         billingDetails.zip = dictionary["zip"] as? String ?? ""
         return billingDetails
     }
+
     private func generateShippingDetails(dictionary: [String: Any]) -> PaymentSDKShippingDetails? {
         let shippingDetails = PaymentSDKShippingDetails()
         shippingDetails.name = dictionary["name"] as? String ?? ""
@@ -112,6 +126,16 @@ import UIKit
         return shippingDetails
     }
     
+    private func generateAlternativePaymentMethods(apmsArray: [String]) -> [AlternativePaymentMethod] {
+        var apms = [AlternativePaymentMethod]()
+        for apmValue in apmsArray {
+            if let apm = AlternativePaymentMethod.init(rawValue: apmValue) {
+                apms.append(apm)
+            }
+        }
+        return apms
+    }
+
     private func generateTheme(dictionary: [String: Any]) -> PaymentSDKTheme? {
         let theme = PaymentSDKTheme.default
         if let imageName = dictionary["logoImage"] as? String {

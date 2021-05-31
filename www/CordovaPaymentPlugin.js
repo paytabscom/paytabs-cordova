@@ -4,6 +4,7 @@ exports.TokeniseType = Object.freeze({"none":"none", "merchantMandatory":"mercha
 exports.TokeniseFromat = Object.freeze({"none":"1", "hex32": "2", "alphaNum20": "3", "digit22": "3", "digit16": "5", "alphaNum32": "6"});
 exports.TransactionType = Object.freeze({"sale":"sale", "authorize": "auth"});
 exports.TransactionClass = Object.freeze({"ecom":"ecom", "recurring":"recur"});
+exports.AlternativePaymentMethod = Object.freeze({"unionPay":"unionpay", "stcPay":"stcpay", "valu": "valu", "meezaQR": "meezaqr", "omannet": "omannet", "knetCredit": "knetcredit", "knetDebit": "knetdebit", "fawry": "fawry"});
 
 exports.startCardPayment = function (arg0, success, error) {
     exec(success, error, 'CordovaPaymentPlugin', 'startCardPayment', [arg0]);
@@ -11,6 +12,10 @@ exports.startCardPayment = function (arg0, success, error) {
 
 exports.startApplePayPayment = function (arg0, success, error) {
     exec(success, error, 'CordovaPaymentPlugin', 'startApplePayPayment', [arg0]);
+};
+
+exports.startAlternativePaymentMethod = function (arg0, success, error) {
+    exec(success, error, 'CordovaPaymentPlugin', 'startAlternativePaymentMethod', [arg0]);
 };
 
 exports.PaymentSDKBillingDetails = function(name, email, phone, addressLine, city, state, countryCode, zip) {
@@ -93,7 +98,8 @@ exports.PaymentSDKConfiguration = function (profileID, serverKey, clientKey,
                     token,
                     transactionReference,
                     samsungToken,
-                    theme) {
+                    theme,
+                    alternativePaymentMethods) {
         this.profileID = profileID;
         this.serverKey = serverKey;
         this.clientKey = clientKey;
@@ -123,4 +129,5 @@ exports.PaymentSDKConfiguration = function (profileID, serverKey, clientKey,
         this.transactionReference = transactionReference
         this.theme = theme
         this.samsungToken = samsungToken
+        this.alternativePaymentMethods = alternativePaymentMethods
 };

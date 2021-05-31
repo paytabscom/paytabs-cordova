@@ -1,6 +1,8 @@
 document.getElementById("PayWithCardButton").addEventListener("click", payWithCard);
 document.getElementById("PayWithApplePayButton").addEventListener("click", payWithApplePay);
 document.getElementById("PayWithSamsunPayButton").addEventListener("click", payWithSamsungPay);
+document.getElementById("PayWithSTCPayButton").addEventListener("click", payWithSTCPay);
+
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -53,7 +55,7 @@ function payWithCard() {
     let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
         name= "John Smith",
         email= "email@domain.com",
-        phone= "+201111111111",
+        phone= "+9731111111",
         addressLine= "Flat 1,Building 123, Road 2345",
         city= "Dubai",
         state= "Dubai",
@@ -117,7 +119,7 @@ function payWithSamsungPay() {
     let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
         name= "John Smith",
         email= "email@domain.com",
-        phone= "+201111111111",
+        phone= "+9731111111",
         addressLine= "Flat 1,Building 123, Road 2345",
         city= "Dubai",
         state= "Dubai",
@@ -126,5 +128,49 @@ function payWithSamsungPay() {
 
     configuration.billingDetails = billingDetails;
     cordova.plugins.CordovaPaymentPlugin.startCardPayment(configuration, onSuccess, onError);
+ 
+}
+
+function payWithSTCPay() {
+    var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKConfiguration();
+    configuration.profileID = "*Profile ID*"
+    configuration.serverKey= "*Server Key*"
+    configuration.clientKey = "*Client Key*"
+    configuration.cartID = "12345"
+    configuration.currency = "SAR"
+    configuration.cartDescription = "Flowers"
+    configuration.merchantCountryCode = "SA"
+    configuration.merchantName = "Flowers Store"
+    configuration.amount = 20
+    configuration.alternativePaymentMethods = [cordova.plugins.CordovaPaymentPlugin.AlternativePaymentMethod.stcPay]
+
+    let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
+        name= "Mohamed Adly",
+        email= "email@domain.com",
+        phone= "96611111111",
+        addressLine= "Flat 1,Building 123, Road 2345",
+        city= "Dubai",
+        state= "Dubai",
+        countryCode= "AE",
+        zip= "1234");
+
+    configuration.billingDetails = billingDetails;
+    cordova.plugins.CordovaPaymentPlugin.startAlternativePaymentMethod(configuration, function (result) {
+        if (result["status"] == "success") {
+            // Handle transaction details here.
+            var transactionDetails = result["data"];
+            console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+            console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+            console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+            console.log("transactionReference:" + transactionDetails.transactionReference)
+            console.log("token:" + transactionDetails.token)
+          } else if (result["status"] == "error") {
+            // Handle error here the code and message.
+          } else if (result["status"] == "event") {
+            // Handle events here.
+          }
+    }, function (error) {
+        console.log(error)
+    });
  
 }

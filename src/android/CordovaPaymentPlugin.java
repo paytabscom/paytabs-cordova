@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkApmsKt.createPaymentSdkApms;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
@@ -16,6 +17,7 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType
 import com.google.gson.Gson;
 import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkError;
@@ -24,8 +26,10 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -41,11 +45,29 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
             JSONObject paymentDetails = new JSONObject(args.getString(0));
             this.startCardPayment(paymentDetails);
             return true;
+        } else if (action.equals("startAlternativePaymentMethod")) {
+            JSONObject paymentDetails = new JSONObject(args.getString(0));
+            this.startAlternativePaymentMethod(paymentDetails);
+            return true;
         }
         return false;
     }
 
     private void startCardPayment(JSONObject paymentDetails) {
+        PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
+        String samsungToken = paymentDetails.optString("samsungToken");
+        if (samsungToken != null && samsungToken.length() > 0)
+            PaymentSdkActivity.startSamsungPayment(this.cordova.getActivity(), configData, samsungToken, this);
+        else
+            PaymentSdkActivity.startCardPayment(this.cordova.getActivity(), configData, this);
+    }
+
+    private void startAlternativePaymentMethod(JSONObject paymentDetails) {  
+        PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
+        PaymentSdkActivity.startAlternativePaymentMethods(this.cordova.getActivity(), configData, this);
+    }
+
+    private PaymentSdkConfigurationDetails createConfiguration(JSONObject paymentDetails) {
         String profileId = paymentDetails.optString("profileID");
         String serverKey = paymentDetails.optString("serverKey");
         String clientKey = paymentDetails.optString("clientKey");
@@ -57,7 +79,6 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         String token = paymentDetails.optString("token");
         String transRef = paymentDetails.optString("transactionReference");
         double amount = paymentDetails.optDouble("amount");
-
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.optString("tokeniseType"));
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.optString("tokenFormat"));
         PaymentSdkTransactionType transactionType = createPaymentSdkTransactionType(paymentDetails.optString("transactionType"));
@@ -86,6 +107,11 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
                     shippingDetails.optString("addressLine"), shippingDetails.optString("zip")
             );
         }
+        JSONArray apmsJSONArray = paymentDetails.optJSONArray("alternativePaymentMethods");
+        ArrayList<PaymentSdkApms> apmsList = new ArrayList<PaymentSdkApms>();
+        if (apmsJSONArray != null) {
+            apmsList =  createAPMs(apmsJSONArray);
+        }
         PaymentSdkConfigurationDetails configData = new PaymentSdkConfigBuilder(
                 profileId, serverKey, clientKey, amount, currency)
                 .setCartDescription(cartDesc)
@@ -96,19 +122,28 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
                 .setCartId(orderId)
                 .setTokenise(tokeniseType, tokenFormat)
                 .setTokenisationData(token, transRef)
+                .hideCardScanner(paymentDetails.optBoolean("hideCardScanner"))
                 .showBillingInfo(paymentDetails.optBoolean("showBillingInfo"))
                 .showShippingInfo(paymentDetails.optBoolean("showShippingInfo"))
                 .forceShippingInfo(paymentDetails.optBoolean("forceShippingInfo"))
                 .setScreenTitle(screenTitle)
+                .setAlternativePaymentMethods(apmsList)
                 .setTransactionType(transactionType)
                 .build();
-        String samsungToken = paymentDetails.optString("samsungToken");
-        if (samsungToken != null && samsungToken.length() > 0)
-            PaymentSdkActivity.startSamsungPayment(this.cordova.getActivity(), configData, samsungToken, this);
-        else
-            PaymentSdkActivity.startCardPayment(this.cordova.getActivity(), configData, this);
+
+        return configData;
     }
 
+    private ArrayList<PaymentSdkApms> createAPMs(JSONArray apmsJSONArray) {
+        ArrayList<PaymentSdkApms> apmsList = new ArrayList<PaymentSdkApms>();
+        for (int i = 0; i < apmsJSONArray.length(); i++) {
+            String apmString = apmsJSONArray.optString(i);
+            PaymentSdkApms apm = createPaymentSdkApms(apmString);
+            apmsList.add(apm);
+        }
+        return apmsList;
+    }
+    
     private void returnResponse(int code, String msg, String status, PaymentSdkTransactionDetails data) {
         HashMap<String,Object> map = new HashMap<String,Object>();
         if (data != null) {
