@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.paytabs.cordova.plugin" version="1.2.0">
-   <name>CordovaPayTabsPlugin</name>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.clickpay.cordova.plugin" version="1.2.1">
+   <name>CordovaClickPayPlugin</name>
    <js-module name="CordovaPaymentPlugin" src="www/CordovaPaymentPlugin.js">
       <clobbers target="cordova.plugins.CordovaPaymentPlugin" />
    </js-module>
@@ -20,7 +20,7 @@
             <source url="https://github.com/CocoaPods/Specs.git"/>
         </config>
         <pods use-frameworks="true">
-            <pod name="PayTabsSDK" spec="~> 6.1.0" />
+            <pod name="ClickPaySDK" spec="~> 6.1.1" />
         </pods>
     </podspec>
    </platform>

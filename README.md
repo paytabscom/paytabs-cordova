@@ -1,10 +1,10 @@
 
-# Cordova PayTabs Plugin
-![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.2.0-green)
-[![npm](https://img.shields.io/npm/l/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs/)
-[![npm](https://img.shields.io/npm/dm/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs)
+# Cordova ClickPay Plugin
+![Version](https://img.shields.io/badge/Cordova%20ClickPay%20Plugin-v1.2.1-green)
+[![npm](https://img.shields.io/npm/l/cordova-plugin-clickpay.svg)](https://www.npmjs.com/package/cordova-plugin-clickpay/)
+[![npm](https://img.shields.io/npm/dm/cordova-plugin-clickpay.svg)](https://www.npmjs.com/package/cordova-plugin-clickpay)
 
-Cordova PayTabs Plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
+Cordova ClickPay Plugin is a wrapper for the native ClickPay Android and iOS SDKs, It helps you integrate with ClickPay payment gateway.
 
 Plugin Support:
 
@@ -14,7 +14,7 @@ Plugin Support:
 # Installation
 
 ```
-$ cordova plugin add com.paytabs.cordova.plugin
+$ cordova plugin add com.clickpay.cordova.plugin
 ```
 
 ### Android - Prerequisites
@@ -34,19 +34,19 @@ android.enableJetifier=true
 ```javascript
 let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(name= "John Smith",
                                   email= "email@test.com",
-                                  phone= "+ 2011111111",
+                                  phone= "9661111111",
                                   addressLine= "address line",
-                                  city= "Dubai",
-                                  state= "Dubai",
-                                  countryCode= "ae", // ISO alpha 2
+                                  city= "Riyadh",
+                                  state= "Riyadh",
+                                  countryCode= "sa", // ISO alpha 2
                                   zip= "1234")
 let shippingDetails = new cordova.plugins.CordovaPaymentPlugin. PaymentSDKShippingDetails(name= "John Smith",
                                   email= "email@test.com",
-                                  phone= "+ 2011111111",
+                                  phone= "96611111111",
                                   addressLine= "address line",
-                                  city= "Dubai",
-                                  state= "Dubai",
-                                  countryCode= "ae", // ISO alpha 2
+                                  city= "Riyadh",
+                                  state= "Riyadh",
+                                  countryCode= "sa", // ISO alpha 2
                                   zip= "1234")
                                               
 ```
@@ -59,9 +59,9 @@ let configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKConfigura
     configuration.serverKey= "*server key*"
     configuration.clientKey = "*client key*"
     configuration.cartID = "545454"
-    configuration.currency = "AED"
+    configuration.currency = "SAR"
     configuration.cartDescription = "Flowers"
-    configuration.merchantCountryCode = "ae"
+    configuration.merchantCountryCode = "sa"
     configuration.merchantName = "Flowers Store"
     configuration.amount = 20
     configuration.screenTitle = "Pay with Card"
@@ -100,7 +100,7 @@ cordova.plugins.CordovaPaymentPlugin.startCardPayment(configuration, function (r
 
 ### Pay with Apple Pay
 
-1. Follow the guide [Steps to configure Apple Pay][applepayguide] to learn how to configure ApplePay with PayTabs.
+1. Follow the guide [Steps to configure Apple Pay][applepayguide] to learn how to configure ApplePay with ClickPay.
 
 2. Do the steps 1 and 2 from **Pay with Card** although you can ignore Billing & Shipping details and Apple Pay will handle it, also you must pass the **merchant name** and **merchant identifier**.
 
@@ -228,8 +228,25 @@ const TransactionType = Object.freeze({"sale":"sale",
 ```
 
 ```javascript
-configuration.transactionType = TransactionType.sale
+configuration.transactionType = cordova.plugins.CordovaPaymentPlugin.TransactionType.sale
 ```
+
+* Alternative payment methods
+
+```javascript
+AlternativePaymentMethod = Object.freeze({"unionPay":"unionpay", 
+"stcPay":"stcpay", 
+"valu": "valu", 
+"meezaQR": "meezaqr", 
+"omannet": "omannet", 
+"knetCredit": "knetcredit", 
+"knetDebit": "knetdebit", 
+"fawry": "fawry"});
+ ```
+ 
+ ```javascript
+configuration.alternativePaymentMethods = [cordova.plugins.CordovaPaymentPlugin.AlternativePaymentMethod.stcPay, ...]
+ ```
 
 ## Demo application
 
@@ -241,14 +258,14 @@ Check our complete [sample][sample].
 
 See [LICENSE][license].
 
-## PayTabs
+## ClickPay
 
 [Support][1] | [Terms of Use][2] | [Privacy Policy][3]
 
- [1]: https://www.paytabs.com/en/support/
- [2]: https://www.paytabs.com/en/terms-of-use/
- [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/paytabs-cordova/blob/master/LICENSE
- [applepayguide]: https://github.com/paytabscom/paytabs-cordova/blob/master/ApplePayConfiguration.md
- [sample]: https://github.com/paytabscom/paytabs-cordova/tree/master/sample
+ [1]: https://merchant.clickpay.com.sa/
+ [2]: https://merchant.clickpay.com.sa/
+ [3]: https://merchant.clickpay.com.sa/
+ [license]: https://github.com/paytabscom/paytabs-cordova/blob/clickpay/LICENSE
+ [applepayguide]: https://github.com/paytabscom/paytabs-cordova/blob/clickpay/ApplePayConfiguration.md
+ [sample]: https://github.com/paytabscom/paytabs-cordova/tree/clickpay/sample
 

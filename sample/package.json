@@ -1,5 +1,5 @@
 {
-  "name": "com.paytabs.cordovasample",
+  "name": "com.clickpay.cordovasample",
   "displayName": "CordovaPaymentSample",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
@@ -13,7 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "com.paytabs.cordova.plugin": "^1.2.0",
+    "com.clickpay.cordova.plugin": "^1.2.1",
     "cordova-android": "^9.1.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-whitelist": "^1.3.4"
@@ -21,7 +21,7 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "com.paytabs.cordova.plugin": {}
+      "com.clickpay.cordova.plugin": {}
     },
     "platforms": [
       "ios",

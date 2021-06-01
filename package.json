@@ -1,9 +1,9 @@
 {
-  "name": "com.paytabs.cordova.plugin",
-  "version": "1.2.0",
-  "description": "PayTabs Cordova Plugin",
+  "name": "com.clickpay.cordova.plugin",
+  "version": "1.2.1",
+  "description": "ClickPay Cordova Plugin",
   "cordova": {
-    "id": "com.paytabs.cordova.plugin",
+    "id": "com.clickpay.cordova.plugin",
     "platforms": [
       "ios",
       "android"
@@ -13,8 +13,8 @@
     "ecosystem:cordova",
     "cordova-ios",
     "cordova-android",
-    "paytabs",
-    "paytabs cordova",
+    "clickpay",
+    "clickpay cordova",
     "payment"
   ],
   "author": "Mohamed Adly (m.adly@paytabs.com)",
