@@ -34,7 +34,7 @@ android.enableJetifier=true
 ```javascript
 let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(name= "John Smith",
                                   email= "email@test.com",
-                                  phone= "+ 2011111111",
+                                  phone= "9731111111",
                                   addressLine= "address line",
                                   city= "Dubai",
                                   state= "Dubai",
@@ -42,7 +42,7 @@ let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingD
                                   zip= "1234")
 let shippingDetails = new cordova.plugins.CordovaPaymentPlugin. PaymentSDKShippingDetails(name= "John Smith",
                                   email= "email@test.com",
-                                  phone= "+ 2011111111",
+                                  phone= "9731111111",
                                   addressLine= "address line",
                                   city= "Dubai",
                                   state= "Dubai",
@@ -143,6 +143,7 @@ Pass Samsung Pay token to the configuration and call `startCardPayment`
 ```javascript
 configuration.samsungToken = "token"
 ```
+
 ### Pay with Alternative Payment Methods
 
 It becomes easy to integrate with other payment methods in your region like STCPay, OmanNet, KNet, Valu, Fawry, UnionPay, and Meeza, to serve a large sector of customers.
@@ -228,8 +229,25 @@ const TransactionType = Object.freeze({"sale":"sale",
 ```
 
 ```javascript
-configuration.transactionType = TransactionType.sale
+configuration.transactionType = cordova.plugins.CordovaPaymentPlugin.TransactionType.sale
 ```
+
+* Alternative payment methods
+
+```javascript
+AlternativePaymentMethod = Object.freeze({"unionPay":"unionpay", 
+"stcPay":"stcpay", 
+"valu": "valu", 
+"meezaQR": "meezaqr", 
+"omannet": "omannet", 
+"knetCredit": "knetcredit", 
+"knetDebit": "knetdebit", 
+"fawry": "fawry"});
+ ```
+ 
+ ```javascript
+configuration.alternativePaymentMethods = [cordova.plugins.CordovaPaymentPlugin.AlternativePaymentMethod.stcPay, ...]
+ ```
 
 ## Demo application
 
