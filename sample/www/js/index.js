@@ -39,9 +39,9 @@ function payWithCard() {
     configuration.serverKey= "*Server Key*"
     configuration.clientKey = "*Client Key*"
     configuration.cartID = "12345"
-    configuration.currency = "AED"
+    configuration.currency = "SAR"
     configuration.cartDescription = "Flowers"
-    configuration.merchantCountryCode = "ae"
+    configuration.merchantCountryCode = "sa"
     configuration.merchantName = "Flowers Store"
     configuration.amount = 20
     configuration.screenTitle = "Pay with Card"
@@ -55,11 +55,11 @@ function payWithCard() {
     let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
         name= "John Smith",
         email= "email@domain.com",
-        phone= "+9731111111",
+        phone= "+96611111111",
         addressLine= "Flat 1,Building 123, Road 2345",
-        city= "Dubai",
-        state= "Dubai",
-        countryCode= "AE",
+        city= "Riyadh",
+        state= "Riyadh",
+        countryCode= "SA",
         zip= "1234");
 
     configuration.billingDetails = billingDetails;
@@ -106,9 +106,9 @@ function payWithSamsungPay() {
     configuration.serverKey= "*Server Key*"
     configuration.clientKey = "*Client Key*"
     configuration.cartID = "12345"
-    configuration.currency = "AED"
+    configuration.currency = "SAR"
     configuration.cartDescription = "Flowers"
-    configuration.merchantCountryCode = "ae"
+    configuration.merchantCountryCode = "sa"
     configuration.merchantName = "Flowers Store"
     configuration.amount = 20
     configuration.screenTitle = "Pay with Card"
@@ -119,11 +119,11 @@ function payWithSamsungPay() {
     let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
         name= "John Smith",
         email= "email@domain.com",
-        phone= "+9731111111",
+        phone= "+966111111111",
         addressLine= "Flat 1,Building 123, Road 2345",
-        city= "Dubai",
-        state= "Dubai",
-        countryCode= "AE",
+        city= "Riyadh",
+        state= "Riyadh",
+        countryCode= "SA",
         zip= "1234");
 
     configuration.billingDetails = billingDetails;
@@ -145,13 +145,13 @@ function payWithSTCPay() {
     configuration.alternativePaymentMethods = [cordova.plugins.CordovaPaymentPlugin.AlternativePaymentMethod.stcPay]
 
     let billingDetails = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKBillingDetails(
-        name= "Mohamed Adly",
+        name= "John Smith",
         email= "email@domain.com",
         phone= "96611111111",
         addressLine= "Flat 1,Building 123, Road 2345",
-        city= "Dubai",
-        state= "Dubai",
-        countryCode= "AE",
+        city= "Riyadh",
+        state= "Riyadh",
+        countryCode= "SA",
         zip= "1234");
 
     configuration.billingDetails = billingDetails;

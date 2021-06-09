@@ -13,7 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "com.clickpay.cordova.plugin": "^1.2.1",
+    "cordova-plugin-clickpay": "^1.2.1",
     "cordova-android": "^9.1.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-whitelist": "^1.3.4"
@@ -21,7 +21,7 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "com.clickpay.cordova.plugin": {}
+      "cordova-plugin-clickpay": {}
     },
     "platforms": [
       "ios",

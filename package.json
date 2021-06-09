@@ -1,9 +1,9 @@
 {
-  "name": "com.clickpay.cordova.plugin",
-  "version": "1.2.1",
+  "name": "cordova-plugin-clickpay",
+  "version": "1.2.2",
   "description": "ClickPay Cordova Plugin",
   "cordova": {
-    "id": "com.clickpay.cordova.plugin",
+    "id": "cordova-plugin-clickpay",
     "platforms": [
       "ios",
       "android"
@@ -19,5 +19,5 @@
   ],
   "author": "Mohamed Adly (m.adly@paytabs.com)",
   "license": "MIT",
-  "homepage": "https://github.com/paytabscom/paytabs-cordova"
+  "homepage": "https://github.com/paytabscom/paytabs-cordova/tree/clickpay"
 }
