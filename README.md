@@ -1,6 +1,6 @@
 
 # Cordova PayTabs Plugin
-![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.2.0-green)
+![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.2.1-green)
 [![npm](https://img.shields.io/npm/l/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs/)
 [![npm](https://img.shields.io/npm/dm/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs)
 
