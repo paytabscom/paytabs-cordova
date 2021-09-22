@@ -1,1 +1,1 @@
-{"plugins":["cordova-plugin-whitelist","com.paymentsdk.cordova.plugin"]}
+{"plugins":["cordova-plugin-whitelist","com.paytabs.cordova.plugin","cordova-plugin-androidx","cordova-plugin-androidx-adapter","cordova-plugin-file"]}

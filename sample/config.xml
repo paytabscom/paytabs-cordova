@@ -15,8 +15,10 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <allow-navigation href="*" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
