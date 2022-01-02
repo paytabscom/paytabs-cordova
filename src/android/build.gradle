@@ -9,12 +9,8 @@ android {
 repositories {
     jcenter()
     maven { url 'https://jitpack.io' }
-    maven {
-        url  "https://dl.bintray.com/paytabsandroidsdk/paytabs-sdk"
-    }
-    maven { url "http://pay.cards/maven" }
 }
 
 dependencies {
-    implementation 'com.paytabs:payment-sdk:6.2.1'
+    implementation 'com.paytabs:payment-sdk:6.2.5'
 }
