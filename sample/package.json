@@ -13,7 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "com.paytabs.cordova.plugin": "^1.2.1",
+    "com.paytabs.cordova.plugin": "file:..",
     "cordova-android": "^9.1.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-androidx": "^3.0.0",
