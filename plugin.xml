@@ -20,7 +20,7 @@
             <source url="https://github.com/CocoaPods/Specs.git"/>
         </config>
         <pods use-frameworks="true">
-            <pod name="PayTabsSDK" spec="~> 6.1.11" />
+            <pod name="PayTabsSDK" spec="~> 6.3.1" />
         </pods>
     </podspec>
    </platform>

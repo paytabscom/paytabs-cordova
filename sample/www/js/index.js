@@ -1,9 +1,9 @@
 document.getElementById("PayWithCardButton").addEventListener("click", payWithCard);
+document.getElementById("PayWithToken").addEventListener("click", payWithToken);
+document.getElementById("PayWithSavedCards").addEventListener("click", payWithSavedCards);
 document.getElementById("PayWithApplePayButton").addEventListener("click", payWithApplePay);
 document.getElementById("PayWithSamsunPayButton").addEventListener("click", payWithSamsungPay);
 document.getElementById("PayWithSTCPayButton").addEventListener("click", payWithSTCPay);
-document.getElementById("PayWithToken").addEventListener("click", payWithToken);
-document.getElementById("PayWithSavedCards").addEventListener("click", payWithSavedCards);
 // document.getElementById("PayWith3DSTokenizedPayment").addEventListener("click", payWithSTCPay);
 
 document.addEventListener("deviceready", onDeviceReady, false);
