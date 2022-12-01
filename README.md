@@ -76,7 +76,8 @@ Options to show billing and shipping info
 	configuration.showShippingInfo = true
 ```
 
-3. Start payment by calling `startCardPayment` method and handle the transaction details 
+# 1- Pay with card
+Start payment by calling `startCardPayment` method and handle the transaction details 
 
 ```javascript
 cordova.plugins.CordovaPaymentPlugin.startCardPayment(configuration, function (result) {
@@ -97,6 +98,88 @@ cordova.plugins.CordovaPaymentPlugin.startCardPayment(configuration, function (r
         console.log(error)
     });
 ```
+
+<img width="191" alt="card" src="https://user-images.githubusercontent.com/17829232/188835902-c50f41d1-5e3d-4d4c-a49a-e75b81480b75.png">
+
+
+# 2- Pay with Token
+Start payment by calling `startTokenizedCardPayment` method and handle the transaction details 
+
+```javascript
+cordova.plugins.CordovaPaymentPlugin.startTokenizedCardPayment(configuration,
+"Token",
+"TransactionReference",
+ function (result) {
+        if (result["status"] == "success") {
+            // Handle transaction details here.
+            var transactionDetails = result["data"];
+            console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+            console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+            console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+            console.log("transactionReference:" + transactionDetails.transactionReference)
+            console.log("token:" + transactionDetails.token)
+          } else if (result["status"] == "error") {
+            // Handle error here the code and message.
+          } else if (result["status"] == "event") {
+            // Handle events here.
+          }
+    }, function (error) {
+        console.log(error)
+    });
+```
+
+# 3- Pay with 3DS Secured Token
+Start payment by calling `start3DSecureTokenizedCardPayment` method and handle the transaction details 
+
+```javascript
+let cardInfo = new PaymentSDKSavedCardInfo("Card mask", "cardType")
+cordova.plugins.CordovaPaymentPlugin.start3DSecureTokenizedCardPayment(configuration, cardInfo, "token",
+function (result) {
+        if (result["status"] == "success") {
+            // Handle transaction details here.
+            var transactionDetails = result["data"];
+            console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+            console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+            console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+            console.log("transactionReference:" + transactionDetails.transactionReference)
+            console.log("token:" + transactionDetails.token)
+          } else if (result["status"] == "error") {
+            // Handle error here the code and message.
+          } else if (result["status"] == "event") {
+            // Handle events here.
+          }
+    }, function (error) {
+        console.log(error)
+    });
+```
+<img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/188836295-d8d48978-a80f-40d3-bda3-439423fcdec0.png">
+
+
+# 4- Pay with saved card
+Start payment by calling `startPaymentWithSavedCards` method and handle the transaction details 
+
+```javascript
+cordova.plugins.CordovaPaymentPlugin.startPaymentWithSavedCards(configuration, support3DsBool,
+function (result) {
+        if (result["status"] == "success") {
+            // Handle transaction details here.
+            var transactionDetails = result["data"];
+            console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+            console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+            console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+            console.log("transactionReference:" + transactionDetails.transactionReference)
+            console.log("token:" + transactionDetails.token)
+          } else if (result["status"] == "error") {
+            // Handle error here the code and message.
+          } else if (result["status"] == "event") {
+            // Handle events here.
+          }
+    }, function (error) {
+        console.log(error)
+    });
+```
+<img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/190152848-bfc83f8c-1a4b-4a55-99ec-af3c22a3de66.png">
+
 
 ### Pay with Apple Pay
 
