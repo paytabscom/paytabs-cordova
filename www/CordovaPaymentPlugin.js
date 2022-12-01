@@ -10,6 +10,18 @@ exports.startCardPayment = function (arg0, success, error) {
     exec(success, error, 'CordovaPaymentPlugin', 'startCardPayment', [arg0]);
 };
 
+exports.startTokenizedCardPayment = function (arg0, token, transactionRef, success, error) {
+    exec(success, error, 'CordovaPaymentPlugin', 'startTokenizedCardPayment', [arg0, token, transactionRef]);
+};
+
+exports.start3DSecureTokenizedCardPayment = function (arg0, arg1, token, success, error) {
+    exec(success, error, 'CordovaPaymentPlugin', 'start3DSecureTokenizedCardPayment', [arg0, arg1, token]);
+};
+
+exports.startPaymentWithSavedCards = function (arg0, support3DS, success, error) {
+    exec(success, error, 'CordovaPaymentPlugin', 'startPaymentWithSavedCards', [arg0, support3DS]);
+};
+
 exports.startApplePayPayment = function (arg0, success, error) {
     exec(success, error, 'CordovaPaymentPlugin', 'startApplePayPayment', [arg0]);
 };
@@ -77,57 +89,62 @@ exports.PaymentSDKTheme = function(logoImage,
 };
 
 exports.PaymentSDKConfiguration = function (profileID, serverKey, clientKey,
-                    transactionType, transactionClass, cartID, currency, amount,
-                    cartDescription,
-                    languageCode,
-                    forceShippingInfo,
-                    showBillingInfo,
-                    showShippingInfo,
-                    billingDetails,
-                    shippingDetails,
-                    merchantCountryCode,
-                    screenTitle,
-                    merchantName,
-                    serverIP,
-                    tokeniseType,
-                    tokenFormat,
-                    hideCardScanner,
-                    merchantApplePayIdentifier,
-                    simplifyApplePayValidation,
-                    supportedApplePayNetworks,
-                    token,
-                    transactionReference,
-                    samsungToken,
-                    theme,
-                    alternativePaymentMethods) {
-        this.profileID = profileID;
-        this.serverKey = serverKey;
-        this.clientKey = clientKey;
-        this.transactionType = transactionType
-        this.transactionClass = transactionClass
-        this.cartID = cartID;
-        this.currency = currency;
-        this.amount = amount;
-        this.cartDescription = cartDescription
-        this.languageCode = languageCode
-        this.forceShippingInfo = forceShippingInfo
-        this.showBillingInfo = showBillingInfo
-        this.showShippingInfo = showShippingInfo
-        this.billingDetails = billingDetails
-        this.shippingDetails = shippingDetails
-        this.merchantCountryCode = merchantCountryCode
-        this.screenTitle = screenTitle
-        this.merchantName = merchantName
-        this.serverIP = serverIP
-        this.tokeniseType = tokeniseType
-        this.tokenFormat = tokenFormat
-        this.hideCardScanner = hideCardScanner
-        this.merchantApplePayIdentifier = merchantApplePayIdentifier
-        this.simplifyApplePayValidation = simplifyApplePayValidation
-        this.supportedApplePayNetworks = supportedApplePayNetworks
-        this.token = token
-        this.transactionReference = transactionReference
-        this.theme = theme
-        this.samsungToken = samsungToken
-        this.alternativePaymentMethods = alternativePaymentMethods
+    transactionType, transactionClass, cartID, currency, amount,
+    cartDescription,
+    languageCode,
+    forceShippingInfo,
+    showBillingInfo,
+    showShippingInfo,
+    billingDetails,
+    shippingDetails,
+    merchantCountryCode,
+    screenTitle,
+    merchantName,
+    serverIP,
+    tokeniseType,
+    tokenFormat,
+    hideCardScanner,
+    merchantApplePayIdentifier,
+    simplifyApplePayValidation,
+    supportedApplePayNetworks,
+    token,
+    transactionReference,
+    samsungToken,
+    theme,
+    alternativePaymentMethods) {
+this.profileID = profileID;
+this.serverKey = serverKey;
+this.clientKey = clientKey;
+this.transactionType = transactionType
+this.transactionClass = transactionClass
+this.cartID = cartID;
+this.currency = currency;
+this.amount = amount;
+this.cartDescription = cartDescription
+this.languageCode = languageCode
+this.forceShippingInfo = forceShippingInfo
+this.showBillingInfo = showBillingInfo
+this.showShippingInfo = showShippingInfo
+this.billingDetails = billingDetails
+this.shippingDetails = shippingDetails
+this.merchantCountryCode = merchantCountryCode
+this.screenTitle = screenTitle
+this.merchantName = merchantName
+this.serverIP = serverIP
+this.tokeniseType = tokeniseType
+this.tokenFormat = tokenFormat
+this.hideCardScanner = hideCardScanner
+this.merchantApplePayIdentifier = merchantApplePayIdentifier
+this.simplifyApplePayValidation = simplifyApplePayValidation
+this.supportedApplePayNetworks = supportedApplePayNetworks
+this.token = token
+this.transactionReference = transactionReference
+this.theme = theme
+this.samsungToken = samsungToken
+this.alternativePaymentMethods = alternativePaymentMethods
+};
+
+exports.PaymentSDKSavedCardInfo = function (maskedCard, cardType) {
+this.maskedCard = maskedCard;
+this.cardType = cardType;
 };

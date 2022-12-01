@@ -54,7 +54,9 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
             return true;
         } else if (action.equals("start3DSecureTokenizedCardPayment")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
-            this.start3DSecureTokenizedCardPayment(paymentDetails);
+            JSONObject cardInfo = new JSONObject(args.getString(1));
+            String token = args.getString(2);
+            this.start3DSecureTokenizedCardPayment(paymentDetails, cardInfo, token);
             return true;
         } else if (action.equals("startPaymentWithSavedCards")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
@@ -83,9 +85,10 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         PaymentSdkActivity.startTokenizedCardPayment(this.cordova.getActivity(), configData, token, transactionRef, this);
     }
 
-    private void start3DSecureTokenizedCardPayment(JSONObject paymentDetails) {
+    private void start3DSecureTokenizedCardPayment(JSONObject paymentDetails, JSONObject cardInfoJson, String token) {
         PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
-        PaymentSdkActivity.start3DSecureTokenizedCardPayment(this.cordova.getActivity(), configData, this);
+        PaymentSDKSavedCardInfo info = createSavedCardInfo(cardInfoJson);
+        PaymentSdkActivity.start3DSecureTokenizedCardPayment(this.cordova.getActivity(), configData, info, token, this);
     }
 
     private void startPaymentWithSavedCards(JSONObject paymentDetails, boolean support3DS) {
@@ -96,6 +99,13 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
     private void startAlternativePaymentMethod(JSONObject paymentDetails) {  
         PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
         PaymentSdkActivity.startAlternativePaymentMethods(this.cordova.getActivity(), configData, this);
+    }
+
+    private PaymentSDKSavedCardInfo createSavedCardInfo(JSONObject savedCardInfoJson) {
+        String maskedCard = paymentDetails.optString("maskedCard");
+        String cardType = paymentDetails.optString("cardType");
+        PaymentSDKSavedCardInfo savedCardInfoObject = new PaymentSDKSavedCardInfo(maskedCard, cardType);
+        return savedCardInfoObject;
     }
 
     private PaymentSdkConfigurationDetails createConfiguration(JSONObject paymentDetails) {
