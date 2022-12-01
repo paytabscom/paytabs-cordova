@@ -20,6 +20,39 @@ import UIKit
             PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
     }
+        
+    @objc(startTokenizedCardPayment:) func startTokenizedCardPayment(_ command: CDVInvokedUrlCommand) {
+        self.command = command
+        guard let paymentDetails = command.arguments.first as? [String: Any] else { return }
+        guard let token = command.arguments[1] as? String else { return }
+        guard let transactionRef = command.arguments[2] as? String else { return }
+        let configuration = generateConfiguration(dictionary: paymentDetails)
+        if let rootViewController = getRootController() {
+            PaymentManager.startTokenizedCardPayment(on: rootViewController, configuration: configuration, token: token, transactionRef: transactionRef,delegate: self)
+        }
+    }
+        
+    @objc(start3DSecureTokenizedCardPayment:) func start3DSecureTokenizedCardPayment(_ command: CDVInvokedUrlCommand) {
+        self.command = command
+        guard let paymentDetails = command.arguments.first as? [String: Any] else { return }
+        guard let savedCardInfoDic = command.arguments[1] as? [String: Any] else { return }
+        guard let token = command.arguments[2] as? String else { return }
+        let configuration = generateConfiguration(dictionary: paymentDetails)
+        let savedCardInfo = generateSavedCardInfo(dictionary: savedCardInfoDic)
+        if let rootViewController = getRootController() {
+            PaymentManager.start3DSecureTokenizedCardPayment(on: rootViewController, configuration: configuration, savedCardInfo: savedCardInfo, token: token, delegate: self)
+        }
+    }
+        
+    @objc(startPaymentWithSavedCards:) func startPaymentWithSavedCards(_ command: CDVInvokedUrlCommand) {
+        self.command = command
+        guard let paymentDetails = command.arguments.first as? [String: Any] else { return }
+        guard let support3DS = command.arguments[1] as? Bool else { return }
+        let configuration = generateConfiguration(dictionary: paymentDetails)
+        if let rootViewController = getRootController() {
+            PaymentManager.startPaymentWithSavedCards(on: rootViewController, configuration: configuration, support3DS: support3DS, delegate: self)
+        }
+    }
     
     @objc(startApplePayPayment:) func startApplePayPayment(_ command: CDVInvokedUrlCommand) {
         self.command = command
@@ -97,6 +130,15 @@ import UIKit
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
         }
         return configuration
+    }
+
+    private func generateSavedCardInfo(dictionary: [String: Any]) -> PaymentSDKSavedCardInfo {
+        let maskedCard = dictionary["maskedCard"] as? String ?? ""
+        let cardType = dictionary["cardType"] as? String ?? ""
+        let savedCardInfo = PaymentSDKSavedCardInfo(maskedCard: maskedCard, cardType: cardType)
+        
+
+        return savedCardInfo
     }
     
     

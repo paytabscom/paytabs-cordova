@@ -28,6 +28,7 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
+import com.payment.paymentsdk.save_cards.entities.PaymentSDKSavedCardInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +45,23 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         if (action.equals("startCardPayment")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
             this.startCardPayment(paymentDetails);
+            return true;
+        } else if (action.equals("startTokenizedCardPayment")) {
+            JSONObject paymentDetails = new JSONObject(args.getString(0));
+            String token = args.getString(1);
+            String transactionRef = args.getString(2);
+            this.startTokenizedCardPayment(paymentDetails, token, transactionRef);
+            return true;
+        } else if (action.equals("start3DSecureTokenizedCardPayment")) {
+            JSONObject paymentDetails = new JSONObject(args.getString(0));
+            JSONObject cardInfo = new JSONObject(args.getString(1));
+            String token = args.getString(2);
+            this.start3DSecureTokenizedCardPayment(paymentDetails, cardInfo, token);
+            return true;
+        } else if (action.equals("startPaymentWithSavedCards")) {
+            JSONObject paymentDetails = new JSONObject(args.getString(0));
+            boolean support3DS = args.getBoolean(1);
+            this.startPaymentWithSavedCards(paymentDetails, support3DS);
             return true;
         } else if (action.equals("startAlternativePaymentMethod")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
@@ -62,9 +80,32 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
             PaymentSdkActivity.startCardPayment(this.cordova.getActivity(), configData, this);
     }
 
+    private void startTokenizedCardPayment(JSONObject paymentDetails, String token, String transactionRef) {
+        PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);    
+        PaymentSdkActivity.startTokenizedCardPayment(this.cordova.getActivity(), configData, token, transactionRef, this);
+    }
+
+    private void start3DSecureTokenizedCardPayment(JSONObject paymentDetails, JSONObject cardInfoJson, String token) {
+        PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
+        PaymentSDKSavedCardInfo info = createSavedCardInfo(cardInfoJson);
+        PaymentSdkActivity.start3DSecureTokenizedCardPayment(this.cordova.getActivity(), configData, info, token, this);
+    }
+
+    private void startPaymentWithSavedCards(JSONObject paymentDetails, boolean support3DS) {
+        PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
+        PaymentSdkActivity.startPaymentWithSavedCards(this.cordova.getActivity(), configData, support3DS, this);
+    }
+
     private void startAlternativePaymentMethod(JSONObject paymentDetails) {  
         PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
         PaymentSdkActivity.startAlternativePaymentMethods(this.cordova.getActivity(), configData, this);
+    }
+
+    private PaymentSDKSavedCardInfo createSavedCardInfo(JSONObject savedCardInfoJson) {
+        String maskedCard = savedCardInfoJson.optString("maskedCard");
+        String cardType = savedCardInfoJson.optString("cardType");
+        PaymentSDKSavedCardInfo savedCardInfoObject = new PaymentSDKSavedCardInfo(maskedCard, cardType);
+        return savedCardInfoObject;
     }
 
     private PaymentSdkConfigurationDetails createConfiguration(JSONObject paymentDetails) {
