@@ -60,7 +60,7 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
             return true;
         } else if (action.equals("startPaymentWithSavedCards")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
-            boolean support3DS = args.getBoolean(1)
+            boolean support3DS = args.getBoolean(1);
             this.startPaymentWithSavedCards(paymentDetails, support3DS);
             return true;
         } else if (action.equals("startAlternativePaymentMethod")) {
@@ -102,8 +102,8 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
     }
 
     private PaymentSDKSavedCardInfo createSavedCardInfo(JSONObject savedCardInfoJson) {
-        String maskedCard = paymentDetails.optString("maskedCard");
-        String cardType = paymentDetails.optString("cardType");
+        String maskedCard = savedCardInfoJson.optString("maskedCard");
+        String cardType = savedCardInfoJson.optString("cardType");
         PaymentSDKSavedCardInfo savedCardInfoObject = new PaymentSDKSavedCardInfo(maskedCard, cardType);
         return savedCardInfoObject;
     }
