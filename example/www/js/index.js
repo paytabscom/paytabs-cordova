@@ -5,6 +5,7 @@ document.getElementById("PayWithApplePayButton").addEventListener("click", payWi
 document.getElementById("PayWithCardButton").addEventListener("click", payWithCard);
 document.getElementById("PayWithSamsunPayButton").addEventListener("click", payWithSamsungPay);
 document.getElementById("PayWithSTCPayButton").addEventListener("click", payWithSTCPay);
+document.getElementById("Query").addEventListener("click", queryTransaction);
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -40,9 +41,9 @@ function onError(error) {
 
 function payWithCard() {
     var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKConfiguration();
-    configuration.profileID = "profile Id"
-    configuration.serverKey= "Server Key"
-    configuration.clientKey = "Client Key"
+    configuration.profileID = "63904"
+    configuration.serverKey= "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2"
+    configuration.clientKey = "CHKMMD-6MQ962-KVNDP9-NVRM92"
     configuration.cartID = "12345"
     configuration.currency = "EGP"
     configuration.cartDescription = "Flowers"
@@ -336,3 +337,31 @@ function payWithSTCPay() {
   });
 
 }
+
+function queryTransaction() {
+  var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSdkConfigurationDetails();
+  configuration.profileID = "profile Id"
+  configuration.serverKey= "Server Key"
+  configuration.clientKey = "Client Key"
+  configuration.merchantCountryCode = "eg"
+  configuration.transactionReference = "Flowers Store"
+  cordova.plugins.CordovaPaymentPlugin.queryTransaction(configuration, function (result) {
+      if (result["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = result["data"];
+          console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+          console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+          console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+          console.log("transactionReference:" + transactionDetails.transactionReference)
+          console.log("token:" + transactionDetails.token)
+        } else if (result["status"] == "error") {
+          // Handle error here the code and message.
+        } else if (result["status"] == "event") {
+          // Handle events here.
+        }
+  }, function (error) {
+      console.log(error)
+  });
+
+}
+

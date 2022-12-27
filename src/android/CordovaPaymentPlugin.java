@@ -29,6 +29,11 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
 import com.payment.paymentsdk.save_cards.entities.PaymentSDKSavedCardInfo;
+import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
+import com.payment.paymentsdk.QuerySdkActivity;
+import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
+import com.payment.paymentsdk.sharedclasses.model.response.TransactionResponseBody;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +41,7 @@ import java.util.HashMap;
 /**
  * This class echoes a string called from JavaScript.
  */
-public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPaymentInterface {
+public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPaymentInterface, CallbackQueryInterface {
 
     CallbackContext callbackContext;
     @Override
@@ -66,6 +71,10 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         } else if (action.equals("startAlternativePaymentMethod")) {
             JSONObject paymentDetails = new JSONObject(args.getString(0));
             this.startAlternativePaymentMethod(paymentDetails);
+            return true;
+        } else if (action.equals("queryTransaction")) {
+            JSONObject queryConfiguration = new JSONObject(args.getString(0));
+            this.queryTransaction(queryConfiguration);
             return true;
         }
         return false;
@@ -99,6 +108,12 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
     private void startAlternativePaymentMethod(JSONObject paymentDetails) {  
         PaymentSdkConfigurationDetails configData = createConfiguration(paymentDetails);
         PaymentSdkActivity.startAlternativePaymentMethods(this.cordova.getActivity(), configData, this);
+    }
+
+
+    private void queryTransaction(JSONObject queryConfiguration) {  
+        PaymentSDKQueryConfiguration configData = createQueryConfig(queryConfiguration);
+        QuerySdkActivity.queryTransaction(this.cordova.getActivity(), configData, this);
     }
 
     private PaymentSDKSavedCardInfo createSavedCardInfo(JSONObject savedCardInfoJson) {
@@ -175,6 +190,18 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         return configData;
     }
 
+    private PaymentSDKQueryConfiguration createQueryConfig(JSONObject queryConfiguration) {
+        String profileId   = queryConfiguration.optString("profileID");
+        String serverKey   = queryConfiguration.optString("serverKey");
+        String clientKey   = queryConfiguration.optString("clientKey");
+        String transRef    = queryConfiguration.optString("transactionReference");
+        String merchantCountryCode = queryConfiguration.optString("merchantCountryCode");
+
+        PaymentSDKQueryConfiguration configData = new PaymentSDKQueryConfiguration(
+                serverKey, clientKey, merchantCountryCode, profileId, transRef);
+        return configData;
+    }
+
     private ArrayList<PaymentSdkApms> createAPMs(JSONArray apmsJSONArray) {
         ArrayList<PaymentSdkApms> apmsList = new ArrayList<PaymentSdkApms>();
         for (int i = 0; i < apmsJSONArray.length(); i++) {
@@ -219,5 +246,34 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
     @Override
     public void onPaymentCancel() {
         returnResponse(0, "Cancelled", "event", null);
+    }
+
+    @Override
+    public void onCancel() {
+        returnResponse(0, "Cancelled", "event", null);
+    }
+
+    @Override
+    public void onResult(TransactionResponseBody transactionResponseBody) {
+        returnQueryResponse(200, "success", "success", transactionResponseBody);
+    }
+
+    
+    private void returnQueryResponse(int code, String msg, String status, TransactionResponseBody data) {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        if (data != null) {
+            String detailsString = new Gson().toJson(data);
+            try {
+                JSONObject transactionDetails = new JSONObject(detailsString);
+                map.put("data", transactionDetails);
+            } catch (JSONException e) {
+                map.put("data", null);
+            }
+        }
+        map.put("code", code);
+        map.put("message", msg);
+        map.put("status", status);
+        JSONObject json = new JSONObject(map);
+        callbackContext.success(json);
     }
 }

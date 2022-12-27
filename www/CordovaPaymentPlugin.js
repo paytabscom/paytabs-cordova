@@ -30,6 +30,10 @@ exports.startAlternativePaymentMethod = function (arg0, success, error) {
     exec(success, error, 'CordovaPaymentPlugin', 'startAlternativePaymentMethod', [arg0]);
 };
 
+exports.queryTransaction = function (arg0, success, error) {
+    exec(success, error, 'CordovaPaymentPlugin', 'queryTransaction', [arg0]);
+};
+
 exports.PaymentSDKBillingDetails = function(name, email, phone, addressLine, city, state, countryCode, zip) {
     this.name = name
     this.email = email
@@ -147,4 +151,13 @@ this.alternativePaymentMethods = alternativePaymentMethods
 exports.PaymentSDKSavedCardInfo = function (maskedCard, cardType) {
 this.maskedCard = maskedCard;
 this.cardType = cardType;
+};
+
+exports.PaymentSdkConfigurationDetails = function(serverKey, clientKey,
+    merchantCountryCode, profileID, transactionReference) {
+    this.serverKey = serverKey
+    this.clientKey = clientKey
+    this.merchantCountryCode = merchantCountryCode
+    this.profileID = profileID
+    this.transactionReference = transactionReference
 };
