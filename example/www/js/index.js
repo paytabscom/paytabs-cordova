@@ -1,11 +1,11 @@
+document.getElementById("PayWithCardButton").addEventListener("click", payWithCard);
+document.getElementById("Query").addEventListener("click", queryTransaction);
 document.getElementById("PayWithToken").addEventListener("click", payWithToken);
 document.getElementById("PayWithSavedCards").addEventListener("click", payWithSavedCards);
 document.getElementById("PayWith3DSTokenizedPayment").addEventListener("click", payWith3DSTokenizedPayment);
 document.getElementById("PayWithApplePayButton").addEventListener("click", payWithApplePay);
-document.getElementById("PayWithCardButton").addEventListener("click", payWithCard);
 document.getElementById("PayWithSamsunPayButton").addEventListener("click", payWithSamsungPay);
 document.getElementById("PayWithSTCPayButton").addEventListener("click", payWithSTCPay);
-document.getElementById("Query").addEventListener("click", queryTransaction);
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
