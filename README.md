@@ -1,6 +1,6 @@
 
 # Cordova PayTabs Plugin
-![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.3.0-green)
+![Version](https://img.shields.io/badge/Cordova%20PayTabs%20Plugin-v1.4.0-green)
 [![npm](https://img.shields.io/npm/l/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs/)
 [![npm](https://img.shields.io/npm/dm/cordova-plugin-paytabs.svg)](https://www.npmjs.com/package/cordova-plugin-paytabs)
 
@@ -261,6 +261,44 @@ cordova.plugins.CordovaPaymentPlugin.startAlternativePaymentMethod(configuration
         console.log(error)
     });
      
+```
+
+
+## Query transaction
+
+You can check the status of a transaction
+
+ 1- first create PaymentSDKQueryConfiguration
+```JavaScript
+var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSdkConfigurationDetails(
+    "ServerKey",
+    "ClientKey",
+    "Country Iso 2",
+    "Profile Id",
+    "Transaction Reference"
+);
+```
+
+2- Call cordova.plugins.CordovaPaymentPlugin.queryTransaction and pass the needed argument
+
+```JavaScript
+cordova.plugins.CordovaPaymentPlugin.queryTransaction(configuration, function (result) {
+      if (result["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = result["data"];
+          console.log("responseCode:" + transactionDetails.paymentResult.responseCode)
+          console.log("transactionTime:" + transactionDetails.paymentResult.transactionTime)
+          console.log("responseMessage:" + transactionDetails.paymentResult.responseMessage)
+          console.log("transactionReference:" + transactionDetails.transactionReference)
+          console.log("token:" + transactionDetails.token)
+        } else if (result["status"] == "error") {
+          // Handle error here the code and message.
+        } else if (result["status"] == "event") {
+          // Handle events here.
+        }
+  }, function (error) {
+      console.log(error)
+  });
 ```
 
 ## Enums
