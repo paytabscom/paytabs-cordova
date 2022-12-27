@@ -72,6 +72,29 @@ import UIKit
         }
     }
     
+    @objc(queryTransaction:) func queryTransaction(_ command: CDVInvokedUrlCommand) {
+        self.command = command
+        guard let queryConfigurationDictionary = command.arguments.first as? [String: Any] else { return }
+        let configuration = generateQueryConfiguration(dictionary: queryConfigurationDictionary)
+        PaymentManager.queryTransaction(queryConfiguration: configuration) { [weak self] transactionDetails, error in
+            guard let self = self else { return }
+                if let _transactionDetails = transactionDetails {
+                    let encoder = JSONEncoder()
+                    if let data = try? encoder.encode(_transactionDetails),
+                       let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
+                        self.sendPluginResult(code: 200,
+                                  message: "",
+                                  status: "success",
+                                  transactionDetails: dictionary)
+                    }
+                } else if let _error = error {
+                    self.sendPluginResult(code: (_error as NSError).code,
+                              message: _error.localizedDescription,
+                              status: "error")
+                }
+            }
+    }
+    
     func getRootController() -> UIViewController? {
         let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) ?? UIApplication.shared.windows.first
         let topController = keyWindow?.rootViewController
@@ -131,6 +154,17 @@ import UIKit
         }
         return configuration
     }
+    
+    private func generateQueryConfiguration(dictionary: [String: Any]) -> PaymentSDKQueryConfiguration {
+        let serverKey = dictionary["serverKey"] as? String ?? ""
+        let clientKey = dictionary["clientKey"] as? String ?? ""
+        let merchantCountryCode = dictionary["merchantCountryCode"] as? String ?? ""
+        let profileID = dictionary["profileID"] as? String ?? ""
+        let transactionReference = dictionary["transactionReference"] as? String ?? ""
+        let configuration = PaymentSDKQueryConfiguration(serverKey: serverKey, clientKey: clientKey, merchantCountryCode: merchantCountryCode, profileID: profileID, transactionReference: transactionReference)
+        return configuration
+    }
+    
 
     private func generateSavedCardInfo(dictionary: [String: Any]) -> PaymentSDKSavedCardInfo {
         let maskedCard = dictionary["maskedCard"] as? String ?? ""
