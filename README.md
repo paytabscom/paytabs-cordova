@@ -270,7 +270,7 @@ You can check the status of a transaction
 
  1- first create PaymentSDKQueryConfiguration
 ```JavaScript
-var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSdkConfigurationDetails(
+var configuration = new cordova.plugins.CordovaPaymentPlugin.PaymentSDKQueryConfiguration(
     "ServerKey",
     "ClientKey",
     "Country Iso 2",
