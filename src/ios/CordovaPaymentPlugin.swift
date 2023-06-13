@@ -123,7 +123,9 @@ import UIKit
         configuration.transactionReference = dictionary["transactionReference"] as? String
         configuration.hideCardScanner = dictionary["hideCardScanner"] as? Bool ?? false
         configuration.serverIP = dictionary["serverIP"] as? String
-        if let tokeniseType = dictionary["tokeniseType"] as? String,
+        configuration.enableZeroContacts = dictionary["enableZeroContacts"] as? Bool ?? false
+        configuration.isDigitalProduct = dictionary["isDigitalProduct"] as? Bool ?? false
+  if let tokeniseType = dictionary["tokeniseType"] as? String,
            let type = mapTokeiseType(tokeniseType: tokeniseType) {
             configuration.tokeniseType = type
         }

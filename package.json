@@ -1,6 +1,6 @@
 {
   "name": "com.paytabs.cordova.plugin",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "PayTabs Cordova Plugin",
   "cordova": {
     "id": "com.paytabs.cordova.plugin",
