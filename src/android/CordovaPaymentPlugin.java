@@ -181,6 +181,8 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
                 .hideCardScanner(paymentDetails.optBoolean("hideCardScanner"))
                 .showBillingInfo(paymentDetails.optBoolean("showBillingInfo"))
                 .showShippingInfo(paymentDetails.optBoolean("showShippingInfo"))
+                .enableZeroContacts(paymentDetails.optBoolean("enableZeroContacts"))
+                .isDigitalProduct(paymentDetails.optBoolean("isDigitalProduct"))
                 .forceShippingInfo(paymentDetails.optBoolean("forceShippingInfo"))
                 .setScreenTitle(screenTitle)
                 .setAlternativePaymentMethods(apmsList)
@@ -212,7 +214,7 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         return apmsList;
     }
     
-    private void returnResponse(int code, String msg, String status, PaymentSdkTransactionDetails data) {
+    private void returnResponse(int code, String msg, String trace, String status, PaymentSdkTransactionDetails data) {
         HashMap<String,Object> map = new HashMap<String,Object>();
         if (data != null) {
             String detailsString = new Gson().toJson(data);
@@ -226,6 +228,7 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
         map.put("code", code);
         map.put("message", msg);
         map.put("status", status);
+        map.put("trace", trace);
         JSONObject json = new JSONObject(map);
         callbackContext.success(json);
     }
@@ -233,24 +236,24 @@ public class CordovaPaymentPlugin extends CordovaPlugin implements CallbackPayme
     @Override
     public void onError(@NotNull PaymentSdkError err) {
         if (err.getCode() != null)
-            returnResponse(err.getCode(), err.getMsg(), "error", null);
+            returnResponse(err.getCode(), err.getMsg(), err.getTrace(), "error", null);
         else
-            returnResponse(0, err.getMsg(), "error", null);
+            returnResponse(0, err.getMsg(), err.getTrace(), "error", null);
     }
 
     @Override
     public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-        returnResponse(200, "success", "success", paymentSdkTransactionDetails);
+        returnResponse(200, "success", paymentSdkTransactionDetails.getTrace(), "success", paymentSdkTransactionDetails);
     }
 
     @Override
     public void onPaymentCancel() {
-        returnResponse(0, "Cancelled", "event", null);
+        returnResponse(0, "Cancelled", null, "event", null);
     }
 
     @Override
     public void onCancel() {
-        returnResponse(0, "Cancelled", "event", null);
+        returnResponse(0, "Cancelled", null, "event", null);
     }
 
     @Override
