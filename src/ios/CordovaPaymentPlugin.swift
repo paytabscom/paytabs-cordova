@@ -286,11 +286,14 @@ import UIKit
         return TokeniseType.getType(type: type)
     }
     
-    private func sendPluginResult(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil) {
+    private func sendPluginResult(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil, trace: String? = nil) {
         var response = [String: Any]()
         response["code"] = code
         response["message"] = message
         response["status"] = status
+        if let _trace = trace {
+            response["trace"] = _trace
+        }
         if let transactionDetails = transactionDetails {
             response["data"] = transactionDetails
         }
@@ -309,7 +312,8 @@ extension CordovaPaymentPlugin: PaymentManagerDelegate {
         if let error = error {
             return sendPluginResult(code: (error as NSError).code,
                              message: error.localizedDescription,
-                             status: "error")
+                             status: "error",
+                                    trace: (error as? LocalizedError)?.failureReason)
         }
         do {
             let encoder = JSONEncoder()
